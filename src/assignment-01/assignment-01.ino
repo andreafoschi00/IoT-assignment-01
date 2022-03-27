@@ -1,6 +1,7 @@
 #include <avr/sleep.h>
 #include <TimerOne.h>
 #include <EnableInterrupt.h>
+#include "fadingLed.h"
 
 //WARNING: pin 9 and 10 were skipped because they are used by the TimerOne.h library
 #define RED_LED 6                     //Ls
@@ -36,14 +37,14 @@ bool sleeping;               //When goes true, the system is in deep-sleep mode
 bool newGameRequested;       //When goes true, the player requested a new game (by pressing T1)
 
 //That's just the code seen in lab
-void redLEDFading(){
+/*void redLEDFading(){
   analogWrite(RED_LED, currIntensity);
   currIntensity = currIntensity + fadeAmount;
   if (currIntensity == 0 || currIntensity == 255) {
     fadeAmount = -fadeAmount ;
   }
   delay(RED_LED_DELAY);
-}
+}*/
 
 void initialState(){
   Serial.println("Welcome to the Catch the Bouncing Led Ball Game. Press Key T1 to Start");
