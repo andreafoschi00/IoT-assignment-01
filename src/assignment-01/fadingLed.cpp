@@ -1,7 +1,5 @@
 #include "Arduino.h"
-
-#define RED_LED 6                 //Ls
-#define RED_LED_DELAY 20          //For fading LED
+#include "fadingLed.h"
 
 
 extern int currIntensity;

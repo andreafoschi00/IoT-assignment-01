@@ -4,11 +4,9 @@
 #include "fadingLed.h"
 
 //WARNING: pin 9 and 10 were skipped because they are used by the TimerOne.h library
-#define RED_LED 6                     //Ls
 #define POT A0                        //Pot
 #define NUM_LEDS 4                    //Number of leds (which is also the number of buttons)
 #define GREEN_LED_DELAY 300           //Starting delay (decreased any time by 10%)
-#define RED_LED_DELAY 20              //For fading LED
 #define STARTING_TIME_IN_MILLIS 10000 //Game starts at 10sec response time (it will be decreased by the difficult set)
 #define COMPLEXITY_FACTOR 0.1         //Factor F (0.1 --> level 1 | 0.8 --> level 8)
 
