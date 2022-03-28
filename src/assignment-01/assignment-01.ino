@@ -1,12 +1,13 @@
 #include <avr/sleep.h>
 #include <TimerOne.h>
 #include <EnableInterrupt.h>
-#include "fadingLed.h"
 
 //WARNING: pin 9 and 10 were skipped because they are used by the TimerOne.h library
+#define RED_LED 6                     //Ls
 #define POT A0                        //Pot
 #define NUM_LEDS 4                    //Number of leds (which is also the number of buttons)
 #define GREEN_LED_DELAY 300           //Starting delay (decreased any time by 10%)
+#define RED_LED_DELAY 20              //For fading LED
 #define STARTING_TIME_IN_MILLIS 10000 //Game starts at 10sec response time (it will be decreased by the difficult set)
 #define COMPLEXITY_FACTOR 0.1         //Factor F (0.1 --> level 1 | 0.8 --> level 8)
 
@@ -35,14 +36,14 @@ bool sleeping;               //When goes true, the system is in deep-sleep mode
 bool newGameRequested;       //When goes true, the player requested a new game (by pressing T1)
 
 //That's just the code seen in lab
-/*void redLEDFading(){
+void redLEDFading(){
   analogWrite(RED_LED, currIntensity);
   currIntensity = currIntensity + fadeAmount;
   if (currIntensity == 0 || currIntensity == 255) {
     fadeAmount = -fadeAmount ;
   }
   delay(RED_LED_DELAY);
-}*/
+}
 
 void initialState(){
   Serial.println("Welcome to the Catch the Bouncing Led Ball Game. Press Key T1 to Start");
@@ -122,14 +123,17 @@ long newRandomTime(long vStart, long vEnd) {
 void gameLoop() {
   turnOffAllLEDs();
   movingTime = newRandomTime(1000000, 5000000); // 1sec - 5sec
+  /*
+   * Just printing some debug info(s)
   Serial.println("Ball speed: " + String(ballSpeed) + " msec");
   Serial.println("Time to guess: " + String(currentTime) + " msec");
+  */
   newValueCatched = false;
   boolean ascending = true;
   int i=-1;
   Timer1.setPeriod(movingTime);
   Timer1.attachInterrupt(catchValue);
-  //TODO: refactor in a new state!
+  //This while could be removed by adding a new state (using new value to loopState variable)
   while(!newValueCatched) {
     if(i!=-1){
       digitalWrite(ledPin[i], LOW);
@@ -185,7 +189,7 @@ void waitForGuess(){
   //Nothing happens, just waiting for interrupts
 }
 
-//TODO: is it possible to do using only one method?
+//Is it possible to do using only one method?
 void t1Pressed(){
   if(currentPosition == 0) {
     Timer1.stop();
